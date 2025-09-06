@@ -38,3 +38,16 @@ hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
+
+# Website and FTP credentials - DO NOT COMMIT
+website/
+*.ftp
+*.ftpconfig
+ftp-config.*
+deploy.*
+.ftpconfig
+.ftpsync
+filezilla/
+winscp/
+*ftp*password*
+*credentials*
