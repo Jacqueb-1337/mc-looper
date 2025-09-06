@@ -1,0 +1,206 @@
+{
+  "loops": [
+    {
+      "name": "ExampleHelloLoop",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "blocks": [
+        {
+          "type": "comment",
+          "params": {
+            "text": "This is an example loop that demonstrates the system"
+          }
+        },
+        {
+          "type": "chat",
+          "params": {
+            "message": "Hello from MC Looper automated loop!"
+          }
+        },
+        {
+          "type": "wait",
+          "params": {
+            "time": 2,
+            "unit": "seconds"
+          }
+        },
+        {
+          "type": "chat",
+          "params": {
+            "message": "This message appears 2 seconds later"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ConditionalExample",
+      "enabled": true,
+      "trigger": {
+        "type": "interval",
+        "params": {
+          "interval": 30,
+          "unit": "seconds"
+        }
+      },
+      "blocks": [
+        {
+          "type": "comment",
+          "params": {
+            "text": "This loop runs every 30 seconds and checks a condition"
+          }
+        },
+        {
+          "type": "if",
+          "condition": {
+            "type": "variable_greater_than",
+            "params": {
+              "variable": "mob_coins",
+              "value": 1000
+            }
+          },
+          "blocks": [
+            {
+              "type": "chat",
+              "params": {
+                "message": "I have more than 1000 mob coins!"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LoopCallExample",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "blocks": [
+        {
+          "type": "comment",
+          "params": {
+            "text": "This loop calls another loop and then does additional actions"
+          }
+        },
+        {
+          "type": "call_loop",
+          "params": {
+            "loop": "ExampleHelloLoop"
+          }
+        },
+        {
+          "type": "chat",
+          "params": {
+            "message": "The hello loop has finished running!"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ExitAndNestedExample",
+      "enabled": true,
+      "trigger": {
+        "type": "manual"
+      },
+      "blocks": [
+        {
+          "type": "comment",
+          "params": {
+            "text": "Demonstrates exit block and nested block functionality"
+          }
+        },
+        {
+          "type": "chat",
+          "params": {
+            "message": "Starting loop with nested blocks..."
+          }
+        },
+        {
+          "type": "if",
+          "condition": {
+            "type": "variable_greater_than",
+            "params": {
+              "variable": "mob_coins",
+              "value": 500
+            }
+          },
+          "blocks": [
+            {
+              "type": "chat",
+              "params": {
+                "message": "I have enough coins! Exiting the loop early."
+              }
+            },
+            {
+              "type": "exit"
+            },
+            {
+              "type": "chat",
+              "params": {
+                "message": "This message should never appear because of the exit!"
+              }
+            }
+          ]
+        },
+        {
+          "type": "chat",
+          "params": {
+            "message": "This message only appears if mob_coins <= 500"
+          }
+        },
+        {
+          "type": "loop",
+          "params": {
+            "count": 3
+          },
+          "blocks": [
+            {
+              "type": "chat",
+              "params": {
+                "message": "Loop iteration message"
+              }
+            }
+          ]
+        },
+        {
+          "type": "chat",
+          "params": {
+            "message": "Loop completed!"
+          }
+        }
+      ]
+    },
+    {
+      "name": "KeybindExample",
+      "enabled": true,
+      "trigger": {
+        "type": "keybind",
+        "params": {
+          "key": "key.keyboard.f",
+          "verbose": "true"
+        }
+      },
+      "blocks": [
+        {
+          "type": "comment",
+          "params": {
+            "text": "This loop is triggered by pressing the F key"
+          }
+        },
+        {
+          "type": "chat",
+          "params": {
+            "message": "F key was pressed! Loop triggered."
+          }
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "mob_coins": 0,
+    "player": "${minecraft.username}",
+    "last_steal_time": 0
+  }
+}

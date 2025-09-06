@@ -1,0 +1,66 @@
+# Comprehensive Minecraft Class Mappings for 1.20.4
+# Format: obfuscated_name -> proper_name
+
+# Core Classes
+class_310 -> MinecraftClient
+class_304 -> KeyBinding  
+class_2561 -> Text
+class_332 -> DrawContext
+class_342 -> TextFieldWidget
+class_4185 -> ButtonWidget
+class_437 -> Screen
+
+# Items and Inventory
+class_1799 -> ItemStack
+class_2487 -> ItemStack
+class_2499 -> Item
+class_1735 -> Slot
+class_1713 -> ClickType
+
+# GUI and Screens
+class_465 -> HandledScreen
+class_490 -> InventoryScreen
+
+# World and Blocks
+class_2338 -> BlockPos
+class_2350 -> Direction
+class_243 -> Vec3d
+class_3965 -> BlockHitResult
+class_3966 -> EntityHitResult
+class_1268 -> Hand
+
+# Input
+class_3675 -> InputUtil
+
+# Methods
+method_1551 -> getInstance
+method_1507 -> setScreen
+method_1436 -> wasPressed
+method_25394 -> render
+method_25426 -> init
+method_37067 -> clearChildren
+method_37063 -> addDrawableChild
+method_1880 -> setMaxLength
+method_1852 -> setText
+method_1882 -> getText
+method_1875 -> setSelectionStart
+method_1884 -> setSelectionEnd
+method_43470 -> literal
+method_22683 -> getWindow
+method_4490 -> getHandle
+method_15985 -> getKeyName
+method_1441 -> getString
+
+# Fields
+field_22789 -> width
+field_22793 -> textRenderer  
+field_1755 -> currentScreen
+field_1724 -> player
+field_1687 -> world
+field_1705 -> inGameHud
+field_1761 -> interactionManager
+field_1765 -> crosshairTarget
+field_7761 -> slots
+field_7790 -> LEFT
+field_11036 -> UP
+field_1668 -> KEYBOARD

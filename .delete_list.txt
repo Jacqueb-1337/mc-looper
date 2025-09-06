@@ -1,0 +1,6 @@
+src/main/java/com/jacqueb/mclooper/McLooperMod.java
+src/main/java/com/jacqueb/mclooper/mixin/McLooperMixin.java
+src/main/java/com/jacqueb/cmdcopy/mixin/CmdCopyMixin.java
+src/client/resources/modid.client.mixins.json
+src/client/resources/cmdcopy.client.mixins.json
+config/cmdcopy/commands.json
