@@ -55,3 +55,14 @@ winscp/
 
 # PS Scripts
 *.ps1
+
+# Decompiler & remap caches
+decompiled/
+.gradle/loom-cache/
+build/loom-cache/
+build/tmp/
+*.class
+*.jad
+*.jar.old
+*.bak
+*.orig
