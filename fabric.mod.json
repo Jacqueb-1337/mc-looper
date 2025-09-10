@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "mc-looper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "MC Looper",
   "description": "A configurable automation mod with loop-based task execution",
   "authors": [

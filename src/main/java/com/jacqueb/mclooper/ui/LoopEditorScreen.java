@@ -17,6 +17,7 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.util.Formatting;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Text;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -717,16 +718,47 @@ extends net.minecraft.client.gui.screen.Screen {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson((Object)exportLoop);
             StringSelection stringSelection = new StringSelection(json);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(stringSelection, null);
-            if (this.client != null && this.client.player != null) {
-                this.client.player.sendMessage((net.minecraft.text.Text)net.minecraft.text.Text.literal((String)"Loop '").append((net.minecraft.text.Text)net.minecraft.text.Text.literal((String)this.selectedLoop.name).formatted(Formatting.YELLOW)).append((net.minecraft.text.Text)net.minecraft.text.Text.literal((String)"' exported to clipboard!").formatted(Formatting.GREEN)), false);
+            try {
+                // Try system clipboard first (may fail in headless or restricted environments)
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
+                if (this.client != null && this.client.player != null) {
+                    this.client.player.sendMessage(Text.literal("Loop '").append(Text.literal(this.selectedLoop.name).formatted(Formatting.YELLOW)).append(Text.literal("' exported to clipboard!").formatted(Formatting.GREEN)), false);
+                }
+                McLooperMod.LOGGER.info("Exported loop '{}' to clipboard ({} characters)", (Object)this.selectedLoop.name, (Object)json.length());
             }
-            McLooperMod.LOGGER.info("Exported loop '{}' to clipboard ({} characters)", (Object)this.selectedLoop.name, (Object)json.length());
+            catch (java.awt.HeadlessException | SecurityException | IllegalStateException clipboardEx) {
+                // Fallback: write export to config directory so user can retrieve it
+                try {
+                    java.nio.file.Path cfgDir = net.fabricmc.loader.api.FabricLoader.getInstance().getConfigDir();
+                    java.nio.file.Files.createDirectories(cfgDir);
+                    String safeName = this.selectedLoop.name == null ? "exported-loop" : this.selectedLoop.name.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+                    java.nio.file.Path out = cfgDir.resolve(safeName + "-" + System.currentTimeMillis() + ".json");
+                    java.nio.file.Files.writeString(out, json);
+                    if (this.client != null && this.client.player != null) {
+                        // Create a clickable text that opens the file when clicked in supported clients
+                        Text pathText = Text.literal(out.toString()).styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, out.toString())).withColor(Formatting.YELLOW));
+                        Text msg = Text.literal("Loop exported to file: ").formatted(Formatting.GREEN).append(pathText);
+                        this.client.player.sendMessage(msg, false);
+                    }
+                    McLooperMod.LOGGER.info("Exported loop '{}' to file {}", (Object)this.selectedLoop.name, (Object)out.toString());
+                }
+                catch (Exception fileEx) {
+                    if (this.client != null && this.client.player != null) {
+                        String msg = fileEx.getMessage() == null ? "unknown error" : fileEx.getMessage();
+                        this.client.player.sendMessage(Text.literal((String)("Failed to export loop: " + msg)).formatted(Formatting.RED), false);
+                    }
+                    McLooperMod.LOGGER.error("Failed to export loop", (Throwable)fileEx);
+                }
+            }
         }
         catch (Exception e) {
             if (this.client != null && this.client.player != null) {
-                this.client.player.sendMessage((net.minecraft.text.Text)net.minecraft.text.Text.literal((String)("Failed to export loop: " + e.getMessage())).formatted(Formatting.RED), false);
+                String msg = e.getMessage();
+                if (msg == null || msg.trim().isEmpty()) {
+                    msg = e.getClass().getSimpleName() + " (see log for details)";
+                }
+                this.client.player.sendMessage(Text.literal((String)("Failed to export loop: " + msg)).formatted(Formatting.RED), false);
             }
             McLooperMod.LOGGER.error("Failed to export loop", (Throwable)e);
         }
