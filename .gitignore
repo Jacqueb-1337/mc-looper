@@ -51,3 +51,7 @@ filezilla/
 winscp/
 *ftp*password*
 *credentials*
+
+
+# PS Scripts
+*.ps1

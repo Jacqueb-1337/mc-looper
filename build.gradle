@@ -4,10 +4,11 @@ plugins {
 }
 
 group = 'com.jacqueb'
-version = '1.20.4-1.0.0'
+// Use version defined in gradle.properties (mod_version) so it stays in sync
+version = project.hasProperty('mod_version') ? project.mod_version : '1.20.4-1.0.0'
 
 base {
-	archivesName = 'mc-looper'
+	archivesName = project.hasProperty('archives_base_name') ? project.archives_base_name : 'mc-looper'
 }
 
 loom {
