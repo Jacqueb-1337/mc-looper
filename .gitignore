@@ -66,3 +66,27 @@ build/tmp/
 *.jar.old
 *.bak
 *.orig
+
+# Decompiler-related files and folders
+cfr.jar
+McLooperMod_decompiled.txt
+McLooperMod_structure.txt
+recovered-sources-backup/
+
+# Temporary or cleanup-related files
+.delete_list.txt
+temp-clean/
+cleanup-cfr-artifacts.ps1
+cleanup-decompiler.ps1
+comprehensive-cleanup.ps1
+
+# Logs and error files
+hs_err_pid*.log
+
+# Other potential artifacts
+mappings.txt
+log-changes.bat
+log-changes.ps1
+
+# Full recovery directory
+full-recovery/
