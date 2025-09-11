@@ -1,0 +1,62 @@
+name: Publish latest GitHub Release to Modrinth
+
+on:
+  workflow_dispatch: {}
+  # Or auto-publish on new releases:
+  # release:
+  #   types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get latest release metadata
+        id: latest
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const rel = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            core.setOutput('tag', rel.data.tag_name);
+            core.setOutput('prerelease', rel.data.prerelease);
+            core.setOutput('body', rel.data.body || '');
+
+      - name: Save changelog from release body
+        run: printf "%s\n" "${{ steps.latest.outputs.body }}" > CHANGELOG.md
+
+      - name: Download assets from latest release
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: ${{ github.repository }}
+          latest: true
+          fileName: "*"
+          out-file-path: "release-assets"
+          extract: false
+
+      - name: List downloaded files
+        run: ls -lah release-assets
+
+      - name: Publish to Modrinth
+        uses: Kir-Antipov/mc-publish@v3
+        with:
+          files: "release-assets/**/*.jar"
+
+          # --- Modrinth ---
+          modrinth-id: 1ENCq2ks
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          # --- Metadata ---
+          name: ${{ steps.latest.outputs.tag }}
+          version: ${{ steps.latest.outputs.tag }}
+          changelog-file: CHANGELOG.md
+          release-type: ${{ steps.latest.outputs.prerelease == 'true' && 'beta' || 'release' }}
+
+          game-versions: |
+            1.20.4
+          loaders: |
+            fabric
