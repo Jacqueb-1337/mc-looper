@@ -23,5 +23,8 @@ public class TaskBlock {
     public TaskBlock(String type) {
         this();
         this.type = type;
+        if (type.equals("chat") || type.equals("client_message")) {
+            this.params.put("silent", false);
+        }
     }
 }

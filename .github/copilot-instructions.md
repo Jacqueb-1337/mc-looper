@@ -67,6 +67,7 @@ This workspace contains the Fabric mod "MC Looper" for Minecraft 1.20.4, built w
 
 ## Development Workflow & Change Tracking
 - **MANDATORY:** After making any code changes, always log them using the changelog script
+- **MANDATORY:** When making decisions about what actions to take, provide a very short (one sentence) explanation of why you're doing it
 - **Change Logging Script:** `log-changes.ps1` located in project root
 - **Usage:** `powershell -ExecutionPolicy Bypass -File "log-changes.ps1" -Open "n" "Change description 1" "Change description 2"`
 - **Auto-open options:** Use `-Open "y"` to auto-open changelog, `-Open "n"` to skip opening, or omit for prompt

@@ -307,3 +307,50 @@
  - Critical: BlockEditorScreen text field fixes must be preserved during restoration
 
 
+
+## 2025-09-11 23:01:12
+
+ - Implemented mixin-based log suppression for Minecraft console logs in chat and client_message blocks
+ - Added static flags in McLooperMod for suppressing logs
+ - Created ChatHudMixin to suppress client message logs
+ - Created ClientPlayNetworkHandlerMixin to suppress chat send logs
+ - Updated LoopExecutor to set flags before executing silent blocks
+ - Updated fabric.mod.json and created mixins.json for mixin configuration
+
+
+
+## 2025-09-11 23:19:57
+
+ - Removed unused suppressChatSendLog flag and references from McLooperMod and LoopExecutor
+
+
+
+## 2025-09-11 23:25:31
+
+ - Updated ChatHudMixin to suppress both client_message and chat/command logs
+
+
+
+## 2025-09-11 23:29:57
+
+ - Added MinecraftServerMixin to suppress server-side chat logging
+
+
+
+## 2025-09-11 23:31:14
+
+ - Added PlayerManagerMixin and additional MinecraftServer methods for server-side chat log suppression
+
+
+
+## 2025-09-11 23:36:10
+
+ - Implemented timestamp-based log suppression for multi-line command outputs
+
+
+
+## 2025-09-11 23:40:03
+
+ - Changed log suppression duration from 5 seconds to 1 second for both commands and chat messages
+
+

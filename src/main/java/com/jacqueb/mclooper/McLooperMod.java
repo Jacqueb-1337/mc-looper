@@ -21,6 +21,9 @@ public class McLooperMod
 implements ClientModInitializer {
     public static final String MOD_ID = "mc-looper";
     public static final Logger LOGGER = LoggerFactory.getLogger((String)"mc-looper");
+    public static boolean suppressChatSendLog = false;
+    public static boolean suppressClientMessageLog = false;
+    public static long suppressChatSendLogUntil = 0;
     private static ConfigManager configManager;
     private static LoopExecutor loopExecutor;
     private static KeyBinding openEditorKeyBinding;

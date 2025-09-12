@@ -118,18 +118,31 @@ public class LoopExecutor {
     private void initializeExecutors() {
         this.blockExecutors.put("chat", (block, context) -> {
             String message = (String)block.params.get("message");
+            boolean silent = Boolean.TRUE.equals(block.params.getOrDefault("silent", false));
             if (message != null && !message.trim().isEmpty()) {
                 message = this.replaceVariables(message);
                 MinecraftClient client = MinecraftClient.getInstance();
                 if (client.player != null) {
                     if (message.startsWith("/")) {
+                        if (silent) {
+                            McLooperMod.suppressChatSendLog = true;
+                            McLooperMod.suppressChatSendLogUntil = System.currentTimeMillis() + 1000; // 1 second
+                        }
                         client.player.networkHandler.sendChatCommand(message.substring(1));
-                        if (McLooperMod.isVerboseLogging()) {
-                            McLooperMod.LOGGER.info("Sent command: {}", (Object)message);
+                        // Adjusting logging logic to ensure 'silent' option suppresses logs
+                        if (!silent) {
+                            if (McLooperMod.isVerboseLogging()) {
+                                McLooperMod.LOGGER.info("Sent command: {}", (Object)message);
+                            }
                         }
                     } else {
+                        // Ensuring chat message is sent but console log is suppressed when 'silent' is enabled
+                        if (silent) {
+                            McLooperMod.suppressChatSendLog = true;
+                            McLooperMod.suppressChatSendLogUntil = System.currentTimeMillis() + 1000; // 1 second
+                        }
                         client.player.networkHandler.sendChatMessage(message);
-                        if (McLooperMod.isVerboseLogging()) {
+                        if (!silent && McLooperMod.isVerboseLogging()) {
                             McLooperMod.LOGGER.info("Sent chat message: {}", (Object)message);
                         }
                     }
@@ -138,12 +151,16 @@ public class LoopExecutor {
         });
         this.blockExecutors.put("client_message", (block, context) -> {
             String message = (String)block.params.get("message");
+            boolean silent = Boolean.TRUE.equals(block.params.getOrDefault("silent", false));
             if (message != null && !message.trim().isEmpty()) {
                 message = this.replaceVariables(message);
                 MinecraftClient client = MinecraftClient.getInstance();
                 if (client.player != null) {
+                    // Ensuring in-game chat message is displayed regardless of 'silent' option
+                    if (silent) McLooperMod.suppressClientMessageLog = true;
                     client.inGameHud.getChatHud().addMessage((Text)Text.literal((String)message));
-                    if (McLooperMod.isVerboseLogging()) {
+                    // Suppressing console log if 'silent' is enabled
+                    if (!silent && McLooperMod.isVerboseLogging()) {
                         McLooperMod.LOGGER.info("Client message displayed: {}", (Object)message);
                     }
                 }

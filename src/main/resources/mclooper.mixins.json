@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.jacqueb.mclooper.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ChatHudMixin",
+    "MinecraftServerMixin",
+    "PlayerManagerMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

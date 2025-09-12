@@ -19,7 +19,6 @@
       "com.jacqueb.mclooper.McLooperMod"
     ]
   },
-  "mixins": [],
   "depends": {
     "fabricloader": ">=0.15.7",
     "fabric": "*",
@@ -28,5 +27,8 @@
   },
   "suggests": {
     "modmenu": "*"
-  }
+  },
+  "mixins": [
+    "mclooper.mixins.json"
+  ]
 }

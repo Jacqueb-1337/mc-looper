@@ -381,6 +381,17 @@ extends net.minecraft.client.gui.screen.Screen {
         this.addDrawableChild((ClickableWidget)saveButton);
         net.minecraft.client.gui.widget.ButtonWidget cancelButton = net.minecraft.client.gui.widget.ButtonWidget.builder((net.minecraft.text.Text)net.minecraft.text.Text.literal((String)"Cancel"), btn -> this.close()).dimensions(this.width / 2 + 10, this.height - 40, 100, 20).build();
         this.addDrawableChild((ClickableWidget)cancelButton);
+        if (this.block.type.equals("chat") || this.block.type.equals("client_message")) {
+            ButtonWidget silentToggle = ButtonWidget.builder(
+                Text.literal("Silent: " + (Boolean.TRUE.equals(this.block.params.getOrDefault("silent", false)) ? "ON" : "OFF")),
+                button -> {
+                    boolean currentValue = Boolean.TRUE.equals(this.block.params.getOrDefault("silent", false));
+                    this.block.params.put("silent", !currentValue);
+                    button.setMessage(Text.literal("Silent: " + (!currentValue ? "ON" : "OFF")));
+                }
+            ).dimensions(this.width / 2 - 100, this.height / 6 + 120, 200, 20).build();
+            this.addDrawableChild(silentToggle);
+        }
     }
 
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {

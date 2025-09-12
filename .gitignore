@@ -90,3 +90,6 @@ log-changes.ps1
 
 # Full recovery directory
 full-recovery/
+
+# Other misc scripts
+simlink.bat
